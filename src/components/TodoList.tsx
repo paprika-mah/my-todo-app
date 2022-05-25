@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Button, Text, HStack, VStack, Collapse } from '@chakra-ui/react';
 import { Todo } from './Todo';
 import { TodoType } from './Content';
@@ -9,56 +9,26 @@ type Props = {
   handleDelete: (index: number) => void;
 };
 
-const arrayLengthExists = (array: any[]) => {
-  return array.some((v) => v);
-};
+type TodoFilterType = 'ALL' | 'COMPLETE' | 'WORKING';
 
 export const TodoList: React.FC<Props> = ({
   Todos,
   handleChangeStatus,
   handleDelete,
 }) => {
-  const [isToDoExists, setIsToDoExists] = useState<boolean>(
-    arrayLengthExists(Todos)
-  );
-  const [completed, setCompleted] = useState<boolean>(true);
-  const [working, setWorking] = useState<boolean>(true);
-
-  // update Todos, update state
-  useEffect(() => {
-    setIsToDoExists(arrayLengthExists(Todos));
-  }, [Todos]);
-
-  // handle filter when click
-  const handleFilter = (type: 'all' | 'completed' | 'working') => {
-    // process
-    const typeHandler = {
-      all: () => {
-        setCompleted(true);
-        setWorking(true);
-      },
-      completed: () => {
-        setCompleted(true);
-        setWorking(false);
-      },
-      working: () => {
-        setCompleted(false);
-        setWorking(true);
-      },
-    };
-    // do
-    typeHandler[type]();
-  };
+  const isToDoExists = Todos?.length >= 1 ? true : false;
+  const [todoFilter, setTodoFilter] = useState<TodoFilterType>('ALL');
 
   // filter Todos data
   const filterTodos = () => {
-    const completedArray = completed
-      ? Todos.filter((Todo) => Todo.isCompleted)
-      : [];
-    const workingArray = working
-      ? Todos.filter((Todo) => !Todo.isCompleted)
-      : [];
-    return [...workingArray, ...completedArray];
+    switch (todoFilter) {
+      case 'ALL':
+        return Todos;
+      case 'COMPLETE':
+        return Todos.filter((t) => t.isCompleted);
+      case 'WORKING':
+        return Todos.filter((t) => !t.isCompleted);
+    }
   };
 
   return (
@@ -76,11 +46,11 @@ export const TodoList: React.FC<Props> = ({
             height={'auto'}
             minHeight={'auto'}
             backgroundColor={'transparent'}
-            textDecoration={completed && working ? 'underline' : 'none'}
+            textDecoration={todoFilter === 'ALL' ? 'underline' : 'none'}
             _hover={{ backgroundColor: 'transparent', opacity: 0.75 }}
             _active={{ backgroundColor: 'transparent' }}
             _focus={{ boxShadow: 'none' }}
-            onClick={() => handleFilter('all')}
+            onClick={() => setTodoFilter('ALL')}
           >
             All
           </Button>
@@ -91,11 +61,11 @@ export const TodoList: React.FC<Props> = ({
             height={'auto'}
             minHeight={'auto'}
             backgroundColor={'transparent'}
-            textDecoration={completed && !working ? 'underline' : 'none'}
+            textDecoration={todoFilter === 'COMPLETE' ? 'underline' : 'none'}
             _hover={{ backgroundColor: 'transparent', opacity: 0.75 }}
             _active={{ backgroundColor: 'transparent' }}
             _focus={{ boxShadow: 'none' }}
-            onClick={() => handleFilter('completed')}
+            onClick={() => setTodoFilter('COMPLETE')}
           >
             Completed
           </Button>
@@ -106,11 +76,11 @@ export const TodoList: React.FC<Props> = ({
             height={'auto'}
             minHeight={'auto'}
             backgroundColor={'transparent'}
-            textDecoration={!completed && working ? 'underline' : 'none'}
+            textDecoration={todoFilter === 'WORKING' ? 'underline' : 'none'}
             _hover={{ backgroundColor: 'transparent', opacity: 0.75 }}
             _active={{ backgroundColor: 'transparent' }}
             _focus={{ boxShadow: 'none' }}
-            onClick={() => handleFilter('working')}
+            onClick={() => setTodoFilter('WORKING')}
           >
             Working
           </Button>
