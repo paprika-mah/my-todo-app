@@ -1,14 +1,14 @@
 import React from 'react';
 import { Box, IconButton, Text, HStack } from '@chakra-ui/react';
 import { CheckIcon, DeleteIcon } from '@chakra-ui/icons';
-import { TasksType } from './Content';
+import { TodoType } from './Content';
 
 type Props = {
   onChange: () => void;
   onDelete: () => void;
-} & TasksType;
+} & TodoType;
 
-export const Task: React.FC<Props> = ({
+export const Todo: React.FC<Props> = ({
   title,
   detail,
   isCompleted,
@@ -29,7 +29,7 @@ export const Task: React.FC<Props> = ({
         height={'24px'}
         padding={'0'}
         minWidth={'24px'}
-        aria-label="check task"
+        aria-label="check Todo"
         icon={isCompleted ? <CheckIcon /> : undefined}
         onClick={onChange}
         size={'sm'}
@@ -59,7 +59,7 @@ export const Task: React.FC<Props> = ({
         height={'24px'}
         padding={'0'}
         minWidth={'24px'}
-        aria-label="delete task"
+        aria-label="delete Todo"
         icon={<DeleteIcon />}
         onClick={onDelete}
         size={'sm'}

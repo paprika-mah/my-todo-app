@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useCookies } from 'react-cookie';
 import { Box } from '@chakra-ui/react';
-import { InputTask } from './InputTask';
-import { TaskList } from './TaskList';
+import { InputTodo } from './InputTodo';
+import { TodoList } from './TodoList';
 import { format } from 'date-fns';
 
-export type TasksType = {
+export type TodoType = {
   title: string;
   detail: string;
   isCompleted: boolean;
@@ -13,58 +13,58 @@ export type TasksType = {
 };
 
 export const Content = () => {
-  const [cookies, setCookie] = useCookies(['tasks']);
-  const [tasks, setTasks] = useState<TasksType[]>(cookies.tasks || []);
+  const [cookies, setCookie] = useCookies(['Todos']);
+  const [Todos, setTodos] = useState<TodoType[]>(cookies.Todos || []);
 
   // handlers
   const handleDelete = (index: number) => {
-    const newArray = [...tasks];
+    const newArray = [...Todos];
     newArray.splice(index, 1);
-    setTasks(newArray);
+    setTodos(newArray);
   };
 
   const handleChangeStatus = (index: number) => {
-    const newArray = [...tasks];
+    const newArray = [...Todos];
     newArray[index].isCompleted = !!!newArray[index].isCompleted;
-    setTasks(newArray);
+    setTodos(newArray);
     handleSort();
   };
 
   const handleAdd = ({ title, detail }) => {
-    setTasks([
+    setTodos([
       {
         title,
         detail,
         isCompleted: false,
         timestamp: format(new Date(), 'yyyy/MM/dd hh:mm:ss'),
       },
-      ...tasks,
+      ...Todos,
     ]);
-    setCookie('tasks', tasks);
+    setCookie('Todos', Todos);
   };
 
   const handleSort = () => {
-    const completedArray = tasks.filter((task) => task.isCompleted);
-    const workingArray = tasks.filter((task) => !task.isCompleted);
+    const completedArray = Todos.filter((Todo) => Todo.isCompleted);
+    const workingArray = Todos.filter((Todo) => !Todo.isCompleted);
 
     // sort keep adding
     workingArray.sort((a, b) => {
       return a.timestamp < b.timestamp ? 1 : -1;
     });
 
-    setTasks([...workingArray, ...completedArray]);
+    setTodos([...workingArray, ...completedArray]);
   };
 
   // update cookie
   useEffect(() => {
-    setCookie('tasks', tasks);
-  }, [setCookie, tasks]);
+    setCookie('Todos', Todos);
+  }, [setCookie, Todos]);
 
   return (
     <Box margin={'0 auto'} padding={'48px'} maxWidth={'768px'}>
-      <InputTask handleAdd={handleAdd} />
-      <TaskList
-        tasks={tasks}
+      <InputTodo handleAdd={handleAdd} />
+      <TodoList
+        Todos={Todos}
         handleChangeStatus={handleChangeStatus}
         handleDelete={handleDelete}
       />

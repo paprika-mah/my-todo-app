@@ -13,7 +13,7 @@ type Props = {
   handleAdd: ({ title, detail }: { title: string; detail: string }) => void;
 };
 
-export const InputTask: React.FC<Props> = ({ handleAdd: propsHandleAdd }) => {
+export const InputTodo: React.FC<Props> = ({ handleAdd: propsHandleAdd }) => {
   const [title, setTitle] = useState('');
   const [detail, setDetail] = useState('');
   const [isAddValid, setIsAddValid] = useState(false);
@@ -49,7 +49,7 @@ export const InputTask: React.FC<Props> = ({ handleAdd: propsHandleAdd }) => {
         <HStack spacing="16px">
           <Input
             value={title}
-            placeholder="Enter your task title"
+            placeholder="Enter your Todo title"
             onChange={handleChangeTitle}
             size={'lg'}
             backgroundColor={'white'}
@@ -70,7 +70,7 @@ export const InputTask: React.FC<Props> = ({ handleAdd: propsHandleAdd }) => {
         <Collapse in={isDetailOpen} animateOpacity>
           <Textarea
             value={detail}
-            placeholder="Enter your task detail"
+            placeholder="Enter your Todo detail"
             onChange={handleChangeDetail}
             size={'lg'}
             backgroundColor={'white'}

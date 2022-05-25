@@ -9,7 +9,7 @@ export const App = () => (
       <Box backgroundColor={'gray.50'} minHeight={'100vh'}>
         <Box backgroundColor={'green.500'}>
           <Text color={'white'} textAlign={'center'} fontSize={'sm'}>
-            my TODO App 😉
+            my ToDo App 😉
           </Text>
         </Box>
         <Content />
